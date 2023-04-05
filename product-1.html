@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product 1 - Your Website Name</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <header></header>
+    <main>
+    </main>
+    <footer></footer>
+    <script src="app.js"></script>
+    <script src="loadHeader.js"></script>
+    <script src="loadFooter.js"></script>
+    <script>
+        const productId = parseInt(window.location.pathname.split('-')[1].split('.')[0], 10);
+        displayProduct(productId);
+    </script>
+</body>
+</html>
