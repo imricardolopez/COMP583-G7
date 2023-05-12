@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Account - Your Website Name</title>
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+  <header></header>
+  <main>
+    <h2 style="text-align:center">Your Account</h2>
+    <div class="account-info">
+      <h3 style="text-align:center">Account Information</h3>
+      <p style="text-align:center">Name: <span id="account-name"></span></p>
+      <p style="text-align:center">Email: <span id="account-email"></span></p>
+    </div>
+    <div class="order-history">
+      <h3 style="text-align:center">Order History</h3>
+      <table id="order-history-table">
+        <thead>
+          <tr>
+            <th>Order Number</th>
+            <th>Date</th>
+            <th>Total Price</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Order history will be loaded here -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+  <footer></footer>
+  <script src="app.js"></script>
+  <script src="loadHeader.js"></script>
+  <script src="loadFooter.js"></script>
+  <script src="accountLinks.js"></script>
+  <script src="account.js"></script> <!-- We'll create this file to load user information and order history -->
+</body>
+</html>

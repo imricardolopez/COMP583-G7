@@ -23,27 +23,44 @@
       <label for="password-confirm">Confirm Password</label>
       <input type="password" id="password-confirm" name="password-confirm" required>
 
-      <button type="submit">Sign Up</button>
+      <button id="submit">Sign Up</button>
     </form>
   </main>
   <footer></footer>
   <script src="app.js"></script>
   <script src="loadHeader.js"></script>
   <script src="loadFooter.js"></script>
+  <script src="accountLinks.js"></script>
   <script>
-    const signupForm = document.getElementById('signup-form');
-    signupForm.addEventListener('submit', function (event) {
-      event.preventDefault();
+  const signupForm = document.getElementById('signup-form');
+  signupForm.addEventListener('submit', function (event) {
+    event.preventDefault();
 
-      const password = document.getElementById('password');
-      const passwordConfirm = document.getElementById('password-confirm');
+    const name = document.getElementById('name');
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const passwordConfirm = document.getElementById('password-confirm');
 
-      if (password.value !== passwordConfirm.value) {
-        alert('The passwords do not match. Please try again.');
-      } else {
-        console.log('Form submitted successfully');
-      }
-    });
-  </script>
+    if (password.value !== passwordConfirm.value) {
+      alert('The passwords do not match. Please try again.');
+    } else {
+      const newUser = {
+        name: name.value,
+        email: email.value,
+        password: password.value,
+        orderHistory: [],
+      };
+
+      const users = JSON.parse(localStorage.getItem('users')) || [];
+      users.push(newUser);
+      localStorage.setItem('users', JSON.stringify(users));
+
+      localStorage.setItem('loggedInUser', JSON.stringify(newUser));
+      updateAccountLinks();
+
+      window.location.href = 'account.html';
+    }
+  });
+</script>
 </body>
 </html>
