@@ -3,26 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout - Your Website Name</title>
+    <title>Checkout</title>
     <link rel="stylesheet" href="main.css">
+    <style>
+        .checkout-form {
+            width: 100%;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .form-container label {
+            display: block;
+            text-align: center;
+        }
+
+        .form-container input {
+            margin-bottom: 10px;
+        }
+
+        .expiry-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
 </head>
 <body>
     <header></header>
     <main>
-        <div id="user-info-container">
-            <!-- The user information form will be added here -->
-        </div>
-        <div id="checkout-cart-container">
-            <!-- The cart items will be added here -->
+        <h2 style="text-align:center">Checkout</h2>
+        <div class="checkout-container">
+            <div class="cart-items">
+                <h3>Your Cart</h3>
+                <!-- Cart items will be loaded here by JavaScript -->
+            </div>
+
+            <div class="checkout-form">
+                <h3 style="text-align:center;">Customer Information</h3>
+                <form id="checkout-form">
+                    <div class="form-container">
+                        <label for="name">Name:</label>
+                        <br>
+                        <input type="text" id="name" required>
+                        <br>
+                        <label for="email">Email:</label>
+                        <br>
+                        <input type="email" id="email" required>
+                        <br>
+                        <h3>Payment Method</h3>
+                        <label for="card-number">Card Number:</label>
+                        <br>
+                        <input type="text" id="card-number" minlength="15" maxlength="16" required>
+                        <br>
+                        <div class="expiry-container">
+                            <label for="expiry-month">Expiry Month:</label>
+                            <br>
+                            <input type="number" id="expiry-month" min="1" max="12" required>
+                            <br>
+                            <label for="expiry-year">Expiry Year:</label>
+                            <br>
+                            <input type="number" id="expiry-year" min="2023" max="2030" required>
+                            <br>
+                        </div>
+                        <label for="cvv">CVV:</label>
+                        <br>
+                        <input type="text" id="cvv" minlength="3" maxlength="4" required>
+                        <button type="submit" class="complete-purchase-button">Complete Purchase</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </main>
     <footer></footer>
     <script src="app.js"></script>
     <script src="loadHeader.js"></script>
     <script src="loadFooter.js"></script>
+    <script src="accountLinks.js"></script>
+    <script src="checkout.js"></script>
     <script>
-      displayCheckoutCart();
-      displayCheckoutForm();
+        function displayCheckoutCart() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartItemsDiv = document.querySelector('.cart-items');
+            let cartHTML = '';
+
+            if (cart.length === 0) {
+                cartHTML = '<p style="text-align:center">Your cart is empty.</p>';
+            } else {
+                cart.forEach((item) => {
+                    const product = products.find(p => p.id === item.id);
+                    const productName = product.name.replace(/ /g, '\n'); // Replace spaces with line breaks
+
+                    cartHTML += `
+                    <div class="cart-item cart-item-checkout">
+                        <img src="${product.image}" alt="${product.name}" width="50" height="50">
+                        <div class="checkout-product-name">${product.name}</div>
+                        <div class="quantity-price">
+                            <span>Quantity:</span>
+                            <span>${item.quantity}</span>
+                        </div>
+                        <div class="quantity-price">
+                            <span>Price:</span>
+                            <span>$${product.price}</span>
+                        </div>
+                    </div>
+                    `;
+                });
+            }
+
+            cartItemsDiv.innerHTML = cartHTML;
+        }
+
+        // Call the displayCheckoutCart function when the page loads
+        document.addEventListener('DOMContentLoaded', displayCheckoutCart);
+
+        // Add an event listener for the form submission
+        const checkoutForm = document.getElementById('checkout-form');
+        checkoutForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            // Perform any necessary validations and form processing here
+
+            // Save the order in the user's order history
+            const userString = localStorage.getItem('user');
+            if (userString) {
+                const user = JSON.parse(userString);
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+                if (!user.orders) {
+                    user.orders = [];
+                }
+
+                user.orders.push(cart);
+                localStorage.setItem('user', JSON.stringify(user));
+            }
+
+            // Clear the cart and localStorage after a successful purchase
+            localStorage.removeItem('cart');
+            alert('Your order has been placed successfully! Thank you for your purchase! Your Download Links Will Be Available In Your Account Page!');
+            window.location.href = 'account.html';
+        });
     </script>
 </body>
 </html>
